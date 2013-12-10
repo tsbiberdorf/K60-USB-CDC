@@ -5,7 +5,7 @@
 **     Processor   : MK60DN512VLQ10
 **     Version     : Component 01.000, Driver 01.04, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
+**     Date/Time   : 2013-12-10, 10:52, # CodeGen: 12
 **     Abstract    :
 **
 **     Settings    :
@@ -30,8 +30,8 @@
 
 /* MODULE PE_LDD. */
 
-/* {Default RTOS Adapter} No RTOS includes */
-/* {Default RTOS Adapter} No RTOS driver includes */
+#include "FreeRTOS.h" /* FreeRTOS interface */
+/* {FreeRTOS RTOS Adapter} No RTOS driver includes */
 
 #include "PE_LDD.h"
 #include "Cpu.h"

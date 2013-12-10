@@ -6,7 +6,7 @@
 **     Component   : USB_LDD
 **     Version     : Component 01.307, Driver 01.09, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
+**     Date/Time   : 2013-12-10, 10:52, # CodeGen: 12
 **     Abstract    :
 **         This component implements an low level USB API.
 **     Settings    :
@@ -155,7 +155,7 @@
 
 #include "usb_device.h"
 #include "USB_LDD.h"
-/* {Default RTOS Adapter} No RTOS includes */
+#include "FreeRTOS.h" /* FreeRTOS interface */
 /*lint -save  -e926 -e927 -e928 -e929 Disable MISRA rule (11.4) checking. */
 #include "USB_PDD.h"
 
@@ -317,10 +317,10 @@ typedef struct USB_LDD_TDeviceData_Struct {
   int32_t                          msCounter;    /* 1ms counter */
 } USB_LDD_TDeviceData, *USB_LDD_TDeviceDataPtr;
 
-/* {Default RTOS Adapter} Static object used for simulation of dynamic driver memory allocation */
+/* {FreeRTOS RTOS Adapter} Global variable used for passing a parameter into ISR */
 static USB_LDD_TDeviceData DevDataPtr__DEFAULT_RTOS_ALLOC __attribute__ ((aligned (512)));
-/* {Default RTOS Adapter} Global variable used for passing a parameter into ISR */
-static USB_LDD_TDeviceDataPtr INT_USB0__DEFAULT_RTOS_ISRPARAM;
+
+static USB_LDD_TDeviceDataPtr INT_USB0__BAREBOARD_RTOS_ISRPARAM;
 static void USB_LDD_StartTimer(USB_LDD_TDeviceData *DevDataPtr, int32_t Timeout);
 /*
 ** ===================================================================
@@ -334,8 +334,8 @@ static void USB_LDD_StartTimer(USB_LDD_TDeviceData *DevDataPtr, int32_t Timeout)
 static void USB_LDD_UsbLock(USB_LDD_TDeviceData *DevDataPtr)
 {
   if (!DevDataPtr->ISR) {
-    /* {Default RTOS Adapter} Critical section begin, general PE function is used */
-    EnterCritical();
+    /* {FreeRTOS RTOS Adapter} Critical section begin (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
+    taskENTER_CRITICAL();
   }
 }
 
@@ -351,8 +351,8 @@ static void USB_LDD_UsbLock(USB_LDD_TDeviceData *DevDataPtr)
 static void USB_LDD_UsbUnlock(USB_LDD_TDeviceData *DevDataPtr)
 {
   if (!DevDataPtr->ISR) {
-    /* {Default RTOS Adapter} Critical section end, general PE function is used */
-    ExitCritical();
+    /* {FreeRTOS RTOS Adapter} Critical section ends (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
+    taskEXIT_CRITICAL();
   }
 }
 
@@ -784,14 +784,20 @@ LDD_TDeviceData * USB_LDD_Init(LDD_TUserData *UserDataPtr)
   USB_LDD_TDeviceData             *DevDataPtr;
 
   /* Allocate HAL device structure */
-  /* {Default RTOS Adapter} Driver memory allocation: Dynamic allocation is simulated by a pointer to the static object */
   DevDataPtr = &DevDataPtr__DEFAULT_RTOS_ALLOC;
-  /* {Default RTOS Adapter} Driver memory allocation: Fill the allocated memory by zero value */
-  PE_FillMemory(DevDataPtr, 0U, sizeof(USB_LDD_TDeviceData));
+  PE_FillMemory(DevDataPtr,0U,sizeof(USB_LDD_TDeviceData) );
+  
+  /* {FreeRTOS RTOS Adapter} Driver memory allocation: RTOS function call is defined by FreeRTOS RTOS Adapter property */
+//  DevDataPtr = (USB_LDD_TDeviceData *)pvPortMalloc(sizeof(USB_LDD_TDeviceData));
+  #if FreeRTOS_CHECK_MEMORY_ALLOCATION_ERRORS
+  if (DevDataPtr == NULL) {
+    return (NULL);
+  }
+  #endif
   DevDataPtr->UserDeviceDataPtr = UserDataPtr; /* Store the RTOS device structure */
   /* Interrupt vector(s) allocation */
-  /* {Default RTOS Adapter} Set interrupt vector: IVT is static, ISR parameter is passed by the global variable */
-  INT_USB0__DEFAULT_RTOS_ISRPARAM =  DevDataPtr;
+  /* {FreeRTOS RTOS Adapter} Set interrupt vector: IVT is static, ISR parameter is passed by the global variable */
+  INT_USB0__BAREBOARD_RTOS_ISRPARAM =  DevDataPtr;
   /* Interrupt vector(s) priority setting */
   /* NVICIP73: PRI73=0x80 */
   NVICIP73 = NVIC_IP_PRI73(0x80);                                   
@@ -859,8 +865,8 @@ void USB_LDD_Deinit(LDD_TDeviceData *DeviceDataPtr)
   USB_LDD_TDeviceData             *DevDataPtr = (USB_LDD_TDeviceData*)DeviceDataPtr;
 
   (void)DevDataPtr;                                        /* Parameter is not used, suppress unused argument warning */
-  /* {Default RTOS Adapter} Critical section begin, general PE function is used */
-  EnterCritical();
+  /* {FreeRTOS RTOS Adapter} Critical section begin (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
+  taskENTER_CRITICAL();
   /* Reset module */
   USB_PDD_ResetModule(USB0_BASE_PTR);
   while (USB_PDD_GetModuleResetPendingFlag(USB0_BASE_PTR)) {
@@ -869,14 +875,17 @@ void USB_LDD_Deinit(LDD_TDeviceData *DeviceDataPtr)
   /* Disable module clock */
   /* SIM_SCGC4: USBOTG=0 */
   SIM_SCGC4 &= (uint32_t)~(uint32_t)(SIM_SCGC4_USBOTG_MASK);                                   
-  /* {Default RTOS Adapter} Critical section end, general PE function is used */
-  ExitCritical();
+  /* {FreeRTOS RTOS Adapter} Critical section ends (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
+  taskEXIT_CRITICAL();
   /* Restoring the interrupt vector */
-  /* {Default RTOS Adapter} Restore interrupt vector: IVT is static, no code is generated */
+  /* {FreeRTOS RTOS Adapter} Restore interrupt vector: IVT is static, no code is generated */
   /* Unregistration of the device structure */
   PE_LDD_UnregisterDeviceStructure(PE_LDD_COMPONENT_USB_LDD_ID);
   /* Deallocation of the device structure */
-  /* {Default RTOS Adapter} Driver memory deallocation: Dynamic allocation is simulated, no deallocation code is generated */
+  /* {FreeRTOS RTOS Adapter} Driver memory deallocation: RTOS function call is defined by FreeRTOS RTOS Adapter property */
+  #if FRTOS_MEMORY_SCHEME != 1 /* scheme 1 has no deallocate */
+  vPortFree(DevDataPtr);
+  #endif
 }
 
 /*
@@ -1978,8 +1987,8 @@ static void USB_LDD_DeviceIsr(USB_LDD_TDeviceData *DevDataPtr, uint32_t InSignal
 */
 PE_ISR(USB_LDD_USB_Interrupt)
 {
-  /* {Default RTOS Adapter} ISR parameter is passed through the global variable */
-  USB_LDD_TDeviceDataPtr DevDataPtr = INT_USB0__DEFAULT_RTOS_ISRPARAM;
+  /* {FreeRTOS RTOS Adapter} ISR parameter is passed through the global variable */
+  USB_LDD_TDeviceDataPtr DevDataPtr = INT_USB0__BAREBOARD_RTOS_ISRPARAM;
   uint32_t NewInSignalState;
   uint32_t OtgIntStatus;
   

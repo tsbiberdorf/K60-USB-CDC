@@ -6,7 +6,7 @@
 **     Component   : USB_LDD
 **     Version     : Component 01.307, Driver 01.09, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
+**     Date/Time   : 2013-12-10, 10:52, # CodeGen: 12
 **     Abstract    :
 **         This component implements an low level USB API.
 **     Settings    :
@@ -795,7 +795,7 @@ LDD_TError USB_LDD_DeviceCancelTransfer(LDD_TDeviceData *DeviceDataPtr, uint8_t 
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-/* {Default RTOS Adapter} ISR function prototype */
+/* {FreeRTOS RTOS Adapter} ISR function prototype */
 PE_ISR(USB_LDD_USB_Interrupt);
 
 /* END USB_LDD. */

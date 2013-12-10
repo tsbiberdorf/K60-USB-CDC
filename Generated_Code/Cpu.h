@@ -7,7 +7,7 @@
 **     Version     : Component 01.000, Driver 01.04, CPU db: 3.00.000
 **     Datasheet   : K60P144M100SF2V2RM Rev. 2, Jun 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
+**     Date/Time   : 2013-12-10, 10:52, # CodeGen: 12
 **     Abstract    :
 **
 **     Settings    :
@@ -133,7 +133,7 @@ extern volatile uint8_t SR_lock;
 */
 void PE_low_level_init(void);
 
-/* {Default RTOS Adapter} ISR function prototype */
+/* {FreeRTOS RTOS Adapter} ISR function prototype */
 PE_ISR(Cpu_INT_NMIInterrupt);
 /*
 ** ===================================================================
