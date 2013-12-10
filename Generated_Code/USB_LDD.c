@@ -6,7 +6,7 @@
 **     Component   : USB_LDD
 **     Version     : Component 01.307, Driver 01.09, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 14:20, # CodeGen: 13
+**     Date/Time   : 2013-12-10, 15:07, # CodeGen: 16
 **     Abstract    :
 **         This component implements an low level USB API.
 **     Settings    :
@@ -333,8 +333,7 @@ static void USB_LDD_UsbLock(USB_LDD_TDeviceData *DevDataPtr)
 {
   if (!DevDataPtr->ISR) {
     /* {FreeRTOS RTOS Adapter} Critical section begin (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
-//    taskENTER_CRITICAL();
-    EnterCritical();
+    taskENTER_CRITICAL();
   }
 }
 
@@ -351,8 +350,7 @@ static void USB_LDD_UsbUnlock(USB_LDD_TDeviceData *DevDataPtr)
 {
   if (!DevDataPtr->ISR) {
     /* {FreeRTOS RTOS Adapter} Critical section ends (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
-//    taskEXIT_CRITICAL();
-    ExitCritical();
+    taskEXIT_CRITICAL();
   }
 }
 
@@ -863,8 +861,7 @@ void USB_LDD_Deinit(LDD_TDeviceData *DeviceDataPtr)
 
   (void)DevDataPtr;                                        /* Parameter is not used, suppress unused argument warning */
   /* {FreeRTOS RTOS Adapter} Critical section begin (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
-//  taskENTER_CRITICAL();
-  EnterCritical();
+  taskENTER_CRITICAL();
   /* Reset module */
   USB_PDD_ResetModule(USB0_BASE_PTR);
   while (USB_PDD_GetModuleResetPendingFlag(USB0_BASE_PTR)) {
@@ -874,8 +871,7 @@ void USB_LDD_Deinit(LDD_TDeviceData *DeviceDataPtr)
   /* SIM_SCGC4: USBOTG=0 */
   SIM_SCGC4 &= (uint32_t)~(uint32_t)(SIM_SCGC4_USBOTG_MASK);                                   
   /* {FreeRTOS RTOS Adapter} Critical section ends (RTOS function call is defined by FreeRTOS RTOS Adapter property) */
-  ExitCritical();
-//  taskEXIT_CRITICAL();
+  taskEXIT_CRITICAL();
   /* Restoring the interrupt vector */
   /* {FreeRTOS RTOS Adapter} Restore interrupt vector: IVT is static, no code is generated */
   /* Unregistration of the device structure */

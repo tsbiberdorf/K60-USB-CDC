@@ -76,7 +76,7 @@ int main(void)
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
-  (void)FRTOS1_xTaskCreate(Task1, (signed portCHAR *)"Task1", configMINIMAL_STACK_SIZE*3, NULL, configMAX_PRIORITIES-2, NULL);
+  FRTOS1_xTaskCreate(Task1, (signed portCHAR *)"Task1", configMINIMAL_STACK_SIZE*3, NULL, configMAX_PRIORITIES-2, NULL);
   FRTOS1_vTaskStartScheduler();
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
