@@ -3,7 +3,7 @@
   <Header>
     <Name>ProcessorExpert</Name>
     <SavedBy>tsbiberdorf</SavedBy>
-    <ModificationStamp>12</ModificationStamp>
+    <ModificationStamp>13</ModificationStamp>
     <Date>2013-12-10</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.7.100.RT4_b1331-1654</PEversion>
@@ -28705,7 +28705,7 @@
               <UserReadOnly>false</UserReadOnly>
               <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
               <Index>0</Index>
-              <Expanded>false</Expanded>
+              <Expanded>true</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>PHY_ULPI_Module</ItemSymbol>
@@ -29054,7 +29054,7 @@
               <UserReadOnly>false</UserReadOnly>
               <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
               <Value>false</Value>
-              <Expanded>false</Expanded>
+              <Expanded>true</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>Pin_USB_CLKIN</ItemSymbol>
@@ -29081,7 +29081,7 @@
               <ItemSymbol>PinGrp_DATA_settings</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Expanded>false</Expanded>
+              <Expanded>true</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>PinGrp_USB_DP</ItemSymbol>
@@ -29125,7 +29125,7 @@
               <ItemSymbol>PinGrp_USB_VBUS</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Expanded>false</Expanded>
+              <Expanded>true</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>PinGrp_USB_DEVICE_VBUS_DETECT</ItemSymbol>
@@ -29242,7 +29242,7 @@
               <ItemSymbol>PinGrp_USB_PU_PD</ItemSymbol>
               <ReadOnly>false</ReadOnly>
               <UserReadOnly>false</UserReadOnly>
-              <Expanded>false</Expanded>
+              <Expanded>true</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>PinGrp_USB_DP_PU</ItemSymbol>
@@ -31762,7 +31762,7 @@
             <ItemState>
               <ListItemCount>16</ListItemCount>
               <ItemSymbol>DEV_EP_List</ItemSymbol>
-              <Expanded>true</Expanded>
+              <Expanded>false</Expanded>
             </ItemState>
             <ItemState>
               <ItemSymbol>DEV_Has_EP_0</ItemSymbol>
@@ -41824,8 +41824,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>2048</Value>
-        <Base>DEC</Base>
+        <Value>32768</Value>
+        <Base>HEX</Base>
       </ItemState>
       <ItemState>
         <ItemSymbol>CommandInterpreterEnabled</ItemSymbol>
