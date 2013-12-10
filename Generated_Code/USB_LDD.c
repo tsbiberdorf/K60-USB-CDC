@@ -6,7 +6,7 @@
 **     Component   : USB_LDD
 **     Version     : Component 01.307, Driver 01.09, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 08:27, # CodeGen: 8
+**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
 **     Abstract    :
 **         This component implements an low level USB API.
 **     Settings    :
