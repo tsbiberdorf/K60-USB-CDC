@@ -57,13 +57,15 @@ extern void TestApp_Task(void);
 static portTASK_FUNCTION(Task1, pvParameters) 
 {
 	(void)pvParameters; /* ignore unused parameter */
-	
-	  /* For example: for(;;) { } */
-	  (void)TestApp_Init(); /* Initialize the USB Test Application */
-	  for(;;){
-		  TestApp_Task();
-	  }
-	  
+
+	printf("cdc Task running\n");
+
+	/* For example: for(;;) { } */
+	(void)TestApp_Init(); /* Initialize the USB Test Application */
+	for(;;){
+		TestApp_Task();
+	}
+
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -76,11 +78,12 @@ int main(void)
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
 
+  printf("cdc application running freeRTOS\n");
+
   /* Write your code here */
   FRTOS1_xTaskCreate(Task1, (signed portCHAR *)"Task1", configMINIMAL_STACK_SIZE*3, NULL, configMAX_PRIORITIES-2, NULL);
   FRTOS1_vTaskStartScheduler();
 
-  printf("cdc application running freeRTOS\n");
   
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
