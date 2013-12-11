@@ -175,6 +175,7 @@ typedef unsigned long int       uint32;
 ** ===========================================================================
 */
 #define PE_LDD_COMPONENT_USB_LDD_ID              0x00U
+#define PE_LDD_COMPONENT_IO1_ID              0x01U
 
 /*
 ** ===================================================================
