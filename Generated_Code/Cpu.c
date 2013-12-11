@@ -7,7 +7,7 @@
 **     Version     : Component 01.000, Driver 01.04, CPU db: 3.00.000
 **     Datasheet   : K60P144M100SF2V2RM Rev. 2, Jun 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2013-12-10, 09:04, # CodeGen: 10
+**     Date/Time   : 2013-12-10, 10:52, # CodeGen: 12
 **     Abstract    :
 **
 **     Settings    :
@@ -34,7 +34,7 @@
 
 /* MODULE Cpu. */
 
-/* {Default RTOS Adapter} No RTOS includes */
+#include "FreeRTOS.h" /* FreeRTOS interface */
 #include "usb_cdc.h"
 #include "usb_device.h"
 #include "USB_LDD.h"
@@ -42,6 +42,7 @@
 #include "ADC0.h"
 #include "SPI2.h"
 #include "UTIL1.h"
+#include "FRTOS1.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -320,8 +321,8 @@ void PE_low_level_init(void)
   /* ### Note:   To enable automatic calling of the "SPI2" init code here,
                  the 'Call Init method' property must be set to 'yes'.
    */
-  /* Enable interrupts of the given priority level */
-  Cpu_SetBASEPRI(0U);
+  /* ### FreeRTOS "FRTOS1" init code ... */
+  vPortStopTickTimer(); /* tick timer shall not run until the RTOS scheduler is started */
 }
   /* Flash configuration field */
   __attribute__ ((section (".cfmconfig"))) const uint8_t _cfm[0x10] = {
