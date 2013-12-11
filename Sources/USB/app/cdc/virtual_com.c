@@ -153,6 +153,7 @@ void TestApp_Task(void)
 *****************************************************************************/
 static void Virtual_Com_App(void)
 {
+	static uint_32 cnt=0;
     static uint_8 status = 0;
     /* Loopback Application Code */
     if(g_recv_size)
@@ -169,9 +170,12 @@ static void Virtual_Com_App(void)
     {
         /* Send Data to USB Host*/
         uint_8 size = g_send_size;
+
+        printf("%d\n",cnt++);
+
         g_send_size = 0;
         status = USB_Class_CDC_Interface_DIC_Send_Data(CONTROLLER_ID,
-        g_curr_send_buf,size);
+        		g_curr_send_buf,size);
         if(status != USB_OK)
         {
             /* Send Data Error Handling Code goes here */
