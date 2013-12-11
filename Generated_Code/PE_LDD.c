@@ -43,7 +43,8 @@
 ** Array of initialized device structures of LDD components.
 ** ===========================================================================
 */
-LDD_TDeviceData *PE_LDD_DeviceDataList[1] = {
+LDD_TDeviceData *PE_LDD_DeviceDataList[2] = {
+    NULL,
     NULL
   };
 
@@ -116,7 +117,9 @@ bool PE_PeripheralUsed(uint32_t PrphBaseAddress)
   switch (PrphBaseAddress) {
     /* Base address allocated by peripheral(s) USB0 */
     case 0x40072000UL:
-      result = TRUE;
+    /* Base address allocated by peripheral(s) UART3 */
+    case 0x4006D000UL:
+    	result = TRUE;
       break;
     default:
       break;

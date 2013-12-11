@@ -125,7 +125,9 @@ void __init_hardware(void)
                  0x0100U;       
   /* System clock initialization */
   /* SIM_SCGC5: PORTD=1,PORTA=1 */
-  SIM_SCGC5 |= (SIM_SCGC5_PORTD_MASK | SIM_SCGC5_PORTA_MASK); /* Enable clock gate for ports to enable pin routing */
+  SIM_SCGC5 |= (SIM_SCGC5_PORTD_MASK |
+		  SIM_SCGC5_PORTC_MASK | 
+		  SIM_SCGC5_PORTA_MASK); /* Enable clock gate for ports to enable pin routing */
   /* SIM_CLKDIV1: OUTDIV1=0,OUTDIV2=0,OUTDIV3=1,OUTDIV4=1,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0 */
   SIM_CLKDIV1 = SIM_CLKDIV1_OUTDIV1(0x00) |
                 SIM_CLKDIV1_OUTDIV2(0x00) |
@@ -321,6 +323,9 @@ void PE_low_level_init(void)
   /* ### Note:   To enable automatic calling of the "SPI2" init code here,
                  the 'Call Init method' property must be set to 'yes'.
    */
+
+  /* ### Serial_LDD "IO1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+(void)IO1_Init(NULL);
   /* ### FreeRTOS "FRTOS1" init code ... */
   vPortStopTickTimer(); /* tick timer shall not run until the RTOS scheduler is started */
 }

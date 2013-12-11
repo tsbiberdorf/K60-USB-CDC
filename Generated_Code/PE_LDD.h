@@ -42,6 +42,8 @@
 #include "ADC0.h"
 #include "SPI2.h"
 #include "UTIL1.h"
+#include "CsIO1.h"
+#include "IO1.h"
 
 
 /*

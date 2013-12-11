@@ -28,6 +28,7 @@
 
 
 /* Including needed modules to compile this module/procedure */
+#include <stdio.h>
 #include "Cpu.h"
 #include "Events.h"
 #include "usb_cdc.h"
@@ -79,6 +80,8 @@ int main(void)
   FRTOS1_xTaskCreate(Task1, (signed portCHAR *)"Task1", configMINIMAL_STACK_SIZE*3, NULL, configMAX_PRIORITIES-2, NULL);
   FRTOS1_vTaskStartScheduler();
 
+  printf("cdc application running freeRTOS\n");
+  
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START

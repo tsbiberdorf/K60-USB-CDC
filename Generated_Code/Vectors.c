@@ -38,7 +38,8 @@
   #include "UTIL1.h"
   #include "FRTOS1.h"
   #include "Events.h"
-
+  #include "CsIO1.h"
+  #include "IO1.h"
 
   /* ISR prototype */
   extern uint32_t __SP_INIT;
